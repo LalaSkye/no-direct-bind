@@ -1,13 +1,12 @@
 """The No-Direct-Bind gate.
 
-THEOREM 1 (No-Direct-Bind):
+WITNESS PROPERTY (model-local No-Direct-Bind):
     An unresolved latent intent cannot bind to a terminal action.
     bind(intent) -> effect  IFF  resolve(authority, evidence) == ALLOW.
     Otherwise the outcome is HOLD (fail-closed) or DENY. Never silent execution.
 
-The gate is the ONLY path to a terminal effect. There is no second code path
-that executes an action without passing through `Gate.bind`. That single-entry
-design is what makes the property hold by construction rather than by convention.
+Within this witness, the gate is the only path to the supplied effect function.
+That is not a claim about any caller's other code paths.
 """
 
 from __future__ import annotations

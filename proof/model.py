@@ -1,11 +1,11 @@
-"""Exhaustive state-model proof of the No-Direct-Bind theorem.
+"""Exhaustive check of the model-local No-Direct-Bind invariant.
 
-We model an agent as a small transition system and EXHAUSTIVELY enumerate every
-reachable state. The theorem is then a property checked over the entire reachable
-state space — not a sample, not a test fixture, but all of it.
+This file defines a small transition system and enumerates every state reachable
+under those declared transitions. The result is exhaustive for this model only.
+It is not a theorem about external agent systems or unmodelled execution paths.
 
-THEOREM 1 (No-Direct-Bind).
-    In any run of the gated architecture, the system reaches an EXECUTED state
+MODEL PROPERTY (No-Direct-Bind).
+    In any run of this gated model, the system reaches an EXECUTED state
     only via a transition whose guard is `resolved_allow == True`.
     Equivalently: there is NO reachable state in which an effect has occurred
     while authority was unresolved.
@@ -13,7 +13,7 @@ THEOREM 1 (No-Direct-Bind).
 We prove it two ways:
     (A) Safety invariant holds in every reachable state (this file).
     (B) An "ungated" variant is shown to VIOLATE it — demonstrating the gate is
-        load-bearing, not decorative (see counterexample()).
+        necessary for the property in this model (see counterexample()).
 """
 
 from __future__ import annotations
@@ -47,7 +47,7 @@ def initial_states() -> list[State]:
 
 
 def gated_transitions(s: State) -> list[State]:
-    """The gated architecture. The ONLY edge into EXECUTED is guarded by
+    """The gated model. Its only edge into EXECUTED is guarded by
     resolved_allow == True, which itself can only be set when authority is
     present AND evidence is PROVED."""
     out: list[State] = []
@@ -71,8 +71,8 @@ def gated_transitions(s: State) -> list[State]:
 
 def ungated_transitions(s: State) -> list[State]:
     """A DELIBERATELY broken variant with a 'direct bind' shortcut: intent can
-    jump straight to EXECUTED. Used to show the theorem is falsifiable and that
-    the gate is what makes it hold."""
+    jump straight to EXECUTED. Used to show the model property is falsifiable
+    and that this transition topology is what makes it hold."""
     out = gated_transitions(s)
     if s.phase is Phase.INTENT:
         out.append(replace(s, phase=Phase.EXECUTED))          # the forbidden shortcut
@@ -89,7 +89,7 @@ def safety_invariant(s: State) -> bool:
 
 
 def reachable(transition_fn) -> set[State]:
-    """Exhaustive BFS over the entire reachable state space."""
+    """Exhaustive BFS over the reachable state space of this model."""
     frontier = list(initial_states())
     seen: set[State] = set(frontier)
     while frontier:
@@ -111,7 +111,7 @@ def check(transition_fn) -> tuple[bool, State | None, int]:
 
 
 def counterexample() -> State | None:
-    """The ungated architecture must violate the invariant. If it does not,
+    """The altered model must violate the invariant. If it does not,
     our model is too weak to be meaningful."""
     holds, violation, _ = check(ungated_transitions)
     return None if holds else violation
