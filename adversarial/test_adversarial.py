@@ -1,12 +1,12 @@
 """Adversarial falsification suite.
 
 These are not gentle unit tests. Each one is an ATTEMPT to reach an effect
-without a resolved ALLOW — i.e. to break the No-Direct-Bind theorem. Every
-attempt must FAIL to execute. If any succeeds, the theorem is false and the
-suite goes red.
+without a resolved ALLOW — i.e. to break the model-local No-Direct-Bind
+property. Every attempt must FAIL to execute. If any succeeds, the property is
+false for the declared model or supplied witness and the suite goes red.
 
 Two layers:
-  1. Against the formal model (proof/model.py) — exhaustive.
+  1. Against the declared model (proof/model.py) — exhaustive for that model.
   2. Against the executable witness (witness ndb_gate) — concrete API.
 """
 

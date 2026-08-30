@@ -1,15 +1,14 @@
 -------------------------- MODULE NoDirectBind --------------------------
 (***************************************************************************)
-(* Formal specification of the No-Direct-Bind theorem.                     *)
+(* Model-local specification of the No-Direct-Bind safety invariant.       *)
 (*                                                                         *)
-(* THEOREM 1 (No-Direct-Bind):                                             *)
+(* MODEL PROPERTY (No-Direct-Bind):                                        *)
 (*   An unresolved latent intent cannot bind to a terminal action.         *)
 (*   The system enters "executed" only via a transition guarded by         *)
 (*   resolvedAllow = TRUE.                                                  *)
 (*                                                                         *)
-(* The safety invariant NoDirectBind is checked by TLC over every          *)
-(* reachable state. The "ungated" action Direct (commented in) is the      *)
-(* deliberate falsifier: enabling it makes TLC report a counterexample.    *)
+(* TLC checks reachable states under the selected configuration only.      *)
+(* The commented Direct action is a deliberate model-local falsifier.      *)
 (***************************************************************************)
 EXTENDS Naturals
 
