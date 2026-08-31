@@ -1,5 +1,12 @@
 # no-direct-bind — model-local safety invariant
 
+## Public class
+
+This repository is public.
+It is not `start-here`, `commit-gate-core`, or
+`obligation-bound-policy-admission-lab`.
+Proofs do not inherit in either direction.
+
 This repository contains a 13-state abstract model, a TLA+ specification and a
 small executable witness for one safety property.
 
